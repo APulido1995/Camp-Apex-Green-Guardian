@@ -7,6 +7,11 @@ trigger CAMPX_GardenTrigger on CAMPX__Garden__c (before insert, after insert, af
             if(trigger.new[i].CAMPX__Max_Plant_Count__c < 0 || trigger.new[i].CAMPX__Minimum_Plant_Count__c < 0 || trigger.new[i].CAMPX__Total_Plant_Count__c < 0 || trigger.new[i].CAMPX__Total_Unhealthy_Plant_Count__c < 0) {
                 trigger.new[i].addError('Plant Count fields must be greater than or equal to zero');
             }   
+            if(trigger.new[i].CAMPX__Max_Plant_Count__c != null && trigger.new[i].CAMPX__Minimum_Plant_Count__c != null){
+                if(trigger.new[i].CAMPX__Minimum_Plant_Count__c > trigger.new[i].CAMPX__Max_Plant_Count__c) {
+                        trigger.new[i].addError('The Maximum Plant Count must be greater than or equal to the Minimum Plant Count');
+                }
+            }
         }
 
         CAMPX_GardenInitialFields.setInitialFields(trigger.new);
@@ -66,6 +71,11 @@ trigger CAMPX_GardenTrigger on CAMPX__Garden__c (before insert, after insert, af
             }   
             if(trigger.new[i].CAMPX__Total_Plant_Count__c > 0 && (trigger.new[i].CAMPX__Minimum_Plant_Count__c == null || trigger.new[i].CAMPX__Max_Plant_Count__c == null)) {
                 trigger.new[i].addError('Maximum and Minimum Plant Count fields cannot be blank when there are plants in the Garden');
+            }
+                        if(trigger.new[i].CAMPX__Max_Plant_Count__c != null && trigger.new[i].CAMPX__Minimum_Plant_Count__c != null){
+                if(trigger.new[i].CAMPX__Minimum_Plant_Count__c > trigger.new[i].CAMPX__Max_Plant_Count__c) {
+                        trigger.new[i].addError('The Maximum Plant Count must be greater than or equal to the Minimum Plant Count');
+                }
             }
             
         }
